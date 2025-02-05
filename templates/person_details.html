@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de la Persona</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Detalles de la Persona</h1>
+
+        <div class="card mx-auto col-md-6 shadow p-4">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Folio:</strong> {{ person['folio'] }}</li>
+                <li class="list-group-item"><strong>Nombre:</strong> {{ person['name'] }}</li>
+                <li class="list-group-item"><strong>Tipo de discapacidad:</strong> {{ person['tipo_discapacidad'] }}</li>
+                {% if person['tipo_discapacidad'] == "Familiar" %}
+                    <li class="list-group-item"><strong>Año de vencimiento:</strong> {{ person['vencimiento'][:4] }}</li>
+                {% else %}
+                    <li class="list-group-item">
+                         <strong>Vencimiento:</strong>
+                            {% if person['tipo_discapacidad'] == "Familiar" %}
+                                {{ person['vencimiento'][:4] }}
+                            {% else %}
+                                {{ person['vencimiento'] }}
+                            {% endif %}
+                    </li>
+                {% endif %}
+            </ul>
+        <h2>Código QR</h2>
+<img src="{{ url_for('static', filename='qr_codes/' ~ person['folio'] ~ '.png') }}" alt="Código QR">
+<br>
+<a href="{{ url_for('static', filename='qr_codes/' ~ person['folio'] ~ '.png') }}" download>
+    Descargar QR
+</a>
+
+
+        <div class="text-center mt-4">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Volver a la página principal</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

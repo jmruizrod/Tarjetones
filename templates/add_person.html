@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Persona</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Agregar Nueva Persona</h1>
+        <form method="POST" class="col-md-6 mx-auto card p-4 shadow">
+            <!-- Nombre -->
+            <div class="mb-3">
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Ingrese el nombre" required>
+            </div>
+
+            <!-- Tipo de Discapacidad -->
+            <div class="mb-3">
+                <label for="tipo_discapacidad" class="form-label">Tipo de Discapacidad</label>
+                <select class="form-control" id="tipo_discapacidad" name="tipo_discapacidad" required>
+                    <option value="">Seleccione...</option>
+                    <option value="Temporal">Temporal</option>
+                    <option value="Permanente">Permanente</option>
+                    <option value="Familiar">Familiar</option>
+                </select>
+            </div>
+
+            <!-- Campo de Fecha de Vencimiento -->
+            <div class="mb-3" id="vencimiento_field" style="display: none;">
+                <label for="vencimiento" class="form-label">Fecha de Vencimiento</label>
+                <input type="date" class="form-control" id="vencimiento" name="vencimiento">
+            </div>
+
+            <!-- Campo de Año de Nacimiento -->
+            <div class="mb-3" id="anio_nacimiento_field" style="display: none;">
+                <label for="anio_nacimiento" class="form-label">Año de Nacimiento</label>
+                <input type="number" class="form-control" id="anio_nacimiento" name="anio_nacimiento"
+                       placeholder="Ejemplo: 2023" min="2022" max="2026">
+                <small class="form-text text-muted">Debe ingresar un año entre 2022 y 2026.</small>
+            </div>
+
+            <!-- Botón de Enviar -->
+            <button type="submit" class="btn btn-success w-100">Guardar</button>
+        </form>
+
+        <div class="text-center mt-4">
+            <a href="{{ url_for('index') }}" class="btn btn-link">Volver a la página principal</a>
+        </div>
+    </div>
+
+    <!-- JavaScript para Mostrar/Ocultar Campos -->
+    <script>
+        document.getElementById('tipo_discapacidad').addEventListener('change', function () {
+            const tipo = this.value;
+            const vencimientoField = document.getElementById('vencimiento_field');
+            const anioNacimientoField = document.getElementById('anio_nacimiento_field');
+            const vencimientoInput = document.getElementById('vencimiento');
+            const anioNacimientoInput = document.getElementById('anio_nacimiento');
+
+            // Limpiar valores
+            vencimientoInput.value = '';
+            anioNacimientoInput.value = '';
+
+            if (tipo === "Temporal") {
+                vencimientoField.style.display = 'block';
+                anioNacimientoField.style.display = 'none';
+                vencimientoInput.setAttribute('required', 'required');
+                anioNacimientoInput.removeAttribute('required');
+            } else if (tipo === "Familiar") {
+                vencimientoField.style.display = 'none';
+                anioNacimientoField.style.display = 'block';
+                anioNacimientoInput.setAttribute('required', 'required');
+                vencimientoInput.removeAttribute('required');
+            } else {
+                vencimientoField.style.display = 'none';
+                anioNacimientoField.style.display = 'none';
+                vencimientoInput.removeAttribute('required');
+                anioNacimientoInput.removeAttribute('required');
+            }
+        });
+
+        // Validar que el año esté entre 2022 y 2026
+        document.getElementById('anio_nacimiento').addEventListener('input', function () {
+            const year = parseInt(this.value);
+            if (year < 2022 || year > 2026) {
+                alert("El año debe estar entre 2022 y 2026.");
+                this.value = '';
+            }
+        });
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
